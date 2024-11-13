@@ -14,8 +14,8 @@ composer install
 ```
 then in a new terminal run
 ```
-docker exec -it full-stack-tech-test-laravel.test-1 php artisan migrate
-docker exec -it full-stack-tech-test-laravel.test-1 php artisan db:seed
+docker exec -it tech-task-laravel.test-1 php artisan migrate
+docker exec -it tech-task-laravel.test-1 php artisan db:seed
 npm install
 npm run watch
 ```
