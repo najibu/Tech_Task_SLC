@@ -10,17 +10,20 @@
             </div>
         </header>
 
-        <main class="w-full mt-8 flex flex-col items-center">
+        <main class="mt-8 flex flex-col items-center">
+            <!-- Search Box  -->
             <section class="w-[1220px] mb-10">
                 <div class="flex relative">
                     <input type="text"
-                        class="border border-gray-300 rounded-md w-1/3 p-2 m-auto block text-xs absolute right-16"
+                        class="border border-gray-300 rounded-md w-1/3 p-2 m-auto block text-xs absolute right-12"
+                        v-model="search"
                         placeholder="Search by book title ..."
                     />
                 </div>
             </section>
 
-            <section class="text-xs mt-6">
+            <!-- Table  -->
+            <section class="text-xs mt-6 w-9/12">
                 <div class="relative overflow-auto">
                     <table class="table-auto border border-white text-left">
                         <thead class="bg-gray-800 text-white">
@@ -32,44 +35,16 @@
                             </tr>
                         </thead>
                         <tbody class="bg-gray-300">
-                            <tr>
-                                <td class="px-4 py-3 border border-white">Qui enim asperiores nisi sunt doloribus eius sunt cumque. Qui est nihil quo voluptatibus. Adipisci corrupti maxime soluta magni quaerat et qui.</td>
-                                <td class="px-4 py-3 border border-white">Leta Gutmann</td>
-                                <td class="px-4 py-3 border border-white">5</td>
+                            <tr v-for="book in filteredBooks" :key="book.id">
+                                <td class="px-4 py-3 border border-white">{{ book.title }}</td>
+                                <td class="px-4 py-3 border border-white">{{ book.author }}</td>
+                                <td class="px-4 py-3 border border-white">{{ book.rating }}</td>
                                 <td class="px-4 py-3 border border-white">
                                     <button type="button" class="underline block font-bold hover:text-indigo-300">Edit</button>
                                     <button type="button" class="underline font-bold hover:text-indigo-300">Delete</button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="px-4 py-3 border border-white">Qui enim asperiores nisi sunt doloribus eius sunt cumque. Qui est nihil quo voluptatibus. Adipisci corrupti maxime soluta magni quaerat et qui.</td>
-                                <td class="px-4 py-3 border border-white">Leta Gutmann</td>
-                                <td class="px-4 py-3 border border-white">5</td>
-                                <td class="px-4 py-3 border border-white">
-                                    <button class="underline block font-bold hover:text-indigo-300">Edit</button>
-                                    <button class="underline font-bold hover:text-indigo-300">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 border border-white">Qui enim asperiores nisi sunt doloribus eius sunt cumque. Qui est nihil quo voluptatibus. Adipisci corrupti maxime soluta magni quaerat et qui.</td>
-                                <td class="px-4 py-3 border border-white">Leta Gutmann</td>
-                                <td class="px-4 py-3 border border-white">5</td>
-                                <td class="px-4 py-3 border border-white">
-                                    <button class="underline block font-bold hover:text-indigo-300">Edit</button>
-                                    <button class="underline font-bold hover:text-indigo-300">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 border border-white">Qui enim asperiores nisi sunt doloribus eius sunt cumque. Qui est nihil quo voluptatibus. Adipisci corrupti maxime soluta magni quaerat et qui.</td>
-                                <td class="px-4 py-3 border border-white">Leta Gutmann</td>
-                                <td class="px-4 py-3 border border-white">5</td>
-                                <td class="px-4 py-3 border border-white">
-                                    <button class="underline block font-bold hover:text-indigo-300">Edit</button>
-                                    <button class="underline font-bold hover:text-indigo-300">Delete</button>
-                                </td>
-                            </tr>
                         </tbody>
-
                     </table>
                 </div>
             </section>
@@ -78,10 +53,39 @@
 </template>
 
 <script>
+import axios from "axios"
+
 export default {
     name: 'BookListing',
+
+    data() {
+        return {
+            books: [],
+            search: '',
+        }
+    },
+
+    computed: {
+        filteredBooks() {
+            return this.books.filter(book => book.title.toLowerCase().includes(this.search.toLowerCase()))
+        }
+    },
+
+    created() {
+        this.fetch()
+    },
+
+    methods: {
+        async fetch() {
+            try {
+                const response = await axios.get('/api/books')
+
+                this.books = response.data.data
+            } catch (error) {
+                console.error('Error fetching books', error)
+            }
+        }
+    }
 }
 </script>
 
-<style>
-</style>
