@@ -45,7 +45,11 @@
                                         class="underline block font-bold hover:text-indigo-300">
                                         Edit
                                     </button>
-                                    <button type="button" class="underline font-bold hover:text-indigo-300">Delete</button>
+                                    <button type="button"
+                                        @click="deleteBook(book.id)"
+                                        class="underline font-bold hover:text-indigo-300">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -80,20 +84,31 @@ export default {
     },
 
     methods: {
-        async fetch() {
-            try {
-                const response = await axios.get('/api/books')
-
-                this.books = response.data.data
-            } catch (error) {
-                console.error('Error fetching books:', error)
-            }
+        fetch() {
+            axios.get('/api/books')
+                .then(response => {
+                    this.books = response.data.data
+                })
+                .catch(error => {
+                    console.error('Error fetching books:', error)
+                })
         },
 
         editBook(id) {
-            console.log('clicked', id);
             window.location.href = `/books/${id}/edit`
         },
+
+        deleteBook(id) {
+            if (confirm('Are you sure you want to delete this book?')) {
+                axios.delete(`/api/books/${id}`)
+                    .then(() => {
+                        this.fetch()
+                    })
+                    .catch(error => {
+                        console.error('Error failed deleting this book:', error)
+                    })
+            }
+        }
     }
 }
 </script>

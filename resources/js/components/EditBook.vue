@@ -55,13 +55,14 @@ export default {
     },
 
     methods: {
-        async submit() {
-            try {
-                const response = await axios.put(`/api/books/${this.bookData.id}`, this.book)
-                window.location.href = '/'
-            } catch (error) {
-                console.error('Error failed to update this book:', error)
-            }
+        submit() {
+            axios.put(`/api/books/${this.bookData.id}`, this.book)
+                .then(() => {
+                    window.location.href = '/'
+                })
+                .catch(error => {
+                    console.error('Error failed to update this book:', error)
+                })
         }
     }
 
