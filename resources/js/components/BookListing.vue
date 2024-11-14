@@ -86,7 +86,7 @@ export default {
 
                 this.books = response.data.data
             } catch (error) {
-                console.error('Error fetching books', error)
+                console.error('Error fetching books:', error)
             }
         },
 

@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <button class="text-white bg-orange py-2 px-4 rounded" type="reset">Submit</button>
+                    <button class="text-white bg-orange py-2 px-4 rounded" type="submit">Submit</button>
                 </div>
             </form>
         </div>
@@ -32,11 +32,13 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     name: 'EditBook',
 
     props: {
-        book: {
+        bookData: {
             type: Object,
             required: true
         }
@@ -44,11 +46,24 @@ export default {
 
     data() {
         return {
-            title: this.book.title,
-            author: this.book.author,
-            rating: this.book.rating
+            book: {
+                title: this.bookData.title,
+                author: this.bookData.author,
+                rating: this.bookData.rating
+            }
         }
     },
+
+    methods: {
+        async submit() {
+            try {
+                const response = await axios.put(`/api/books/${this.bookData.id}`, this.book)
+                window.location.href = '/'
+            } catch (error) {
+                console.error('Error failed to update this book:', error)
+            }
+        }
+    }
 
 }
 </script>
