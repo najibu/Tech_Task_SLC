@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Book\DestroyRequest;
-use App\Http\Requests\Book\IndexRequest;
-use App\Http\Requests\Book\StoreRequest;
-use App\Http\Requests\Book\UpdateRequest;
-use App\Http\Services\Book\Destroy;
+use App\Models\Book;
 use App\Http\Services\Book\Index;
 use App\Http\Services\Book\Store;
 use App\Http\Services\Book\Update;
-use App\Models\Book;
+use App\Http\Services\Book\Destroy;
+use App\Http\Requests\Book\EditRequest;
+use App\Http\Requests\Book\IndexRequest;
+use App\Http\Requests\Book\StoreRequest;
+use App\Http\Requests\Book\UpdateRequest;
+use App\Http\Requests\Book\DestroyRequest;
 
 class BookController extends Controller
 {
@@ -40,6 +41,11 @@ class BookController extends Controller
             'message' => 'Successfully updated the book.',
             'data' => $updatedBook
         ]);
+    }
+
+    public function edit(EditRequest $request, Book $book)
+    {
+        return view('edit', compact('book'));
     }
 
     public function destroy(DestroyRequest $request, Destroy $destroy, Book $book)

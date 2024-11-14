@@ -17,8 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/edit', function () {
-    return view('edit');
-});
+Route::get('/books/{book}/edit', 'BookController@edit');
 
 

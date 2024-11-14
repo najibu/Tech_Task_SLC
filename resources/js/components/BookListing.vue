@@ -40,7 +40,11 @@
                                 <td class="px-4 py-3 border border-white">{{ book.author }}</td>
                                 <td class="px-4 py-3 border border-white">{{ book.rating }}</td>
                                 <td class="px-4 py-3 border border-white">
-                                    <button type="button" class="underline block font-bold hover:text-indigo-300">Edit</button>
+                                    <button type="button"
+                                        @click="editBook(book.id)"
+                                        class="underline block font-bold hover:text-indigo-300">
+                                        Edit
+                                    </button>
                                     <button type="button" class="underline font-bold hover:text-indigo-300">Delete</button>
                                 </td>
                             </tr>
@@ -84,7 +88,12 @@ export default {
             } catch (error) {
                 console.error('Error fetching books', error)
             }
-        }
+        },
+
+        editBook(id) {
+            console.log('clicked', id);
+            window.location.href = `/books/${id}/edit`
+        },
     }
 }
 </script>
