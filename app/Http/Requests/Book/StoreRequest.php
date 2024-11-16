@@ -24,7 +24,9 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required|string',
             'author' => 'required|string',
-            'rating' => 'required|integer|min:1|max:10'
+            'rating' => 'required|integer|min:1|max:10',
+            'genres' => 'sometimes|array',
+            'genres.*' => 'integer|exists:genres,id'
         ];
     }
 }

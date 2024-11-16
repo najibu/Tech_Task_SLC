@@ -6,6 +6,9 @@ use App\Models\Book;
 
 class Store
 {
+    /**
+     * Store a newly created book in storage.
+     */
     public function __invoke(array $data): Book
     {
         return Book::create([

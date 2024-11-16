@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use Illuminate\Http\Response;
+use App\Http\Services\Book\Show;
 use App\Http\Services\Book\Index;
 use App\Http\Services\Book\Store;
 use App\Http\Services\Book\Update;
 use App\Http\Services\Book\Destroy;
-use App\Http\Requests\Book\EditRequest;
+use App\Http\Requests\Book\ShowRequest;
 use App\Http\Requests\Book\IndexRequest;
 use App\Http\Requests\Book\StoreRequest;
 use App\Http\Requests\Book\UpdateRequest;
@@ -53,6 +53,22 @@ class BookController extends Controller
     }
 
     /**
+     * Display the specified book.
+     *
+     * @param  ShowRequest  $request
+     * @param  Book  $book
+     * @param  Show  $show
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
+    public function show(ShowRequest $request, Book $book, Show $show)
+    {
+        return response()->json([
+            'message' => 'Successfully fetched the book.',
+            'data' => $show($book)
+        ]);
+    }
+
+    /**
      * Update the specified book in storage.
      *
      * @param  UpdateRequest  $request
@@ -72,18 +88,6 @@ class BookController extends Controller
             'message' => 'Successfully updated the book.',
             'data' => $updatedBook
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified book.
-     *
-     * @param  EditRequest  $request
-     * @param  Book  $book
-     * @return Illuminate\Contracts\View\View|Illuminate\Contracts\View\Factory
-     */
-    public function edit(EditRequest $request, Book $book)
-    {
-        return view('edit', compact('book'));
     }
 
     /**

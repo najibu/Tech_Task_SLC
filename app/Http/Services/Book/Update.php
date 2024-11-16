@@ -6,6 +6,9 @@ use App\Models\Book;
 
 class Update
 {
+    /**
+     * Update the specified book in storage.
+     */
     public function __invoke(array $data, Book $book): Book
     {
         $book->update([
