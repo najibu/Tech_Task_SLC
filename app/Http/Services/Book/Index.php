@@ -8,6 +8,8 @@ class Index
 {
     /**
      * Get all books.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function __invoke()
     {

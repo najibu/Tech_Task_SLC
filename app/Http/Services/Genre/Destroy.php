@@ -8,6 +8,9 @@ class Destroy
 {
     /**
      * Remove the specified genre from storage.
+     * 
+     * @param Genre $genre
+     * @return void
      */
     public function __invoke(Genre $genre): void
     {

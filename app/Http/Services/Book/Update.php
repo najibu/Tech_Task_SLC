@@ -8,6 +8,10 @@ class Update
 {
     /**
      * Update the specified book in storage.
+     * 
+     * @param array $data
+     * @param Book $book
+     * @return Book
      */
     public function __invoke(array $data, Book $book): Book
     {

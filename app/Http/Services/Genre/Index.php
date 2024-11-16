@@ -8,6 +8,8 @@ class Index
 {
     /**
      * Get all genres.
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function __invoke()
     {

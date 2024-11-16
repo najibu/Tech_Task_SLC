@@ -8,6 +8,9 @@ class Store
 {
     /**
      * Store a newly created book in storage.
+     *
+     * @param array $data
+     * @return Book
      */
     public function __invoke(array $data): Book
     {

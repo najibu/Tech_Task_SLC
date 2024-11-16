@@ -7,6 +7,9 @@ class Show
 {
     /**
      * Get the specified book.
+     *
+     * @param Book $book
+     * @return Book
      */
     public function __invoke(Book $book): Book
     {

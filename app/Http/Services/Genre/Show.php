@@ -7,6 +7,9 @@ class Show
 {
     /**
      * Get the specified genre.
+     * 
+     * @param Genre $genre
+     * @return Genre
      */
     public function __invoke(Genre $genre): Genre
     {

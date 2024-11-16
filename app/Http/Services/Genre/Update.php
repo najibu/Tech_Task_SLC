@@ -8,6 +8,10 @@ class Update
 {
     /**
      * Update the specified genre in storage.
+     *
+     * @param  array  $data
+     * @param  Genre  $genre
+     * @return Genre
      */
     public function __invoke(array $data, Genre $genre): Genre
     {
