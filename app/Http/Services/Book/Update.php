@@ -17,6 +17,10 @@ class Update
             'rating' => $data['rating'] ?? $book->rating,
         ]);
 
+        if (array_key_exists('genres', $data) && count($data['genres']) > 0) {
+            $book->genres()->sync($data['genres']);
+        }
+
         return $book;
     }
 }
