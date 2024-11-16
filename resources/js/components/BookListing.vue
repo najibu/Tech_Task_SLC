@@ -1,7 +1,5 @@
 <template>
-    <div class="w-full">
-        <Header />
-
+    <div>
         <main class="mt-8 flex flex-col items-center">
             <!-- Search Box  -->
             <section class="w-[1220px] mb-10">
@@ -15,7 +13,7 @@
             </section>
 
             <!-- Table  -->
-            <section class="text-xs mt-6 w-9/12">
+            <section class="text-xs mt-6 w-9/12" v-if="!loading">
                 <div class="relative overflow-auto">
                     <template v-if="filteredBooks.length > 0">
                         <table class="table-auto border border-white text-left">
@@ -59,19 +57,15 @@
 
 <script>
 import axios from "axios"
-import Header from "../Shared/Header.vue"
 
 export default {
     name: 'BookListing',
-
-    components: {
-        Header
-    },
 
     data() {
         return {
             books: [],
             search: '',
+            loading: false
         }
     },
 
@@ -89,9 +83,12 @@ export default {
 
     methods: {
         fetch() {
+            this.loading = true
+
             axios.get('/api/books')
                 .then(response => {
                     this.books = response.data.data
+                    this.loading = false
                 })
                 .catch(error => {
                     console.error('Error fetching books:', error)
@@ -104,9 +101,12 @@ export default {
 
         deleteBook(id) {
             if (confirm('Are you sure you want to delete this book?')) {
+                this.loading = true
+
                 axios.delete(`/api/books/${id}`)
                     .then(() => {
                         this.fetch()
+                        this.loading = false
                     })
                     .catch(error => {
                         console.error('Error failed deleting this book:', error)

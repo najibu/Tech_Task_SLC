@@ -1,7 +1,5 @@
 <template>
     <div>
-        <Header />
-
         <div class="w-1/5 text-left mr-auto ml-auto -mt-0 mb-0">
             <form @submit.prevent="submit">
                 <div class="pt-10">
@@ -29,14 +27,9 @@
 
 <script>
 import axios from 'axios'
-import Header from '../Shared/Header.vue'
 
 export default {
     name: 'EditBook',
-
-    components: {
-        Header
-    },
 
     props: {
         bookData: {
@@ -51,15 +44,19 @@ export default {
                 title: this.bookData.title,
                 author: this.bookData.author,
                 rating: this.bookData.rating
-            }
+            },
+            loading: false
         }
     },
 
     methods: {
         submit() {
+            this.loading = true
+
             axios.put(`/api/books/${this.bookData.id}`, this.book)
                 .then(() => {
                     window.location.href = '/'
+                    this.loading = false
                 })
                 .catch(error => {
                     console.error('Error failed to update this book:', error)
