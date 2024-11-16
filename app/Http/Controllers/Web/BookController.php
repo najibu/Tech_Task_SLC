@@ -8,7 +8,6 @@ use App\Http\Requests\Book\Web\EditRequest;
 
 class BookController extends Controller
 {
-
     /**
      * Show the form for editing the specified book.
      *

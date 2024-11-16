@@ -12,7 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
         DB::table('book_genre')->delete();
         DB::table('books')->delete();
         DB::table('genres')->delete();
