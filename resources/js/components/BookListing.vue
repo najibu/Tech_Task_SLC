@@ -1,14 +1,6 @@
 <template>
     <div class="w-full">
-        <header class="bg-gray-800 pt-9 pb-20">
-            <div class="w-9/12 text-center m-auto">
-                <h1 class="text-orange text-4xl p-10">Book Shop</h1>
-                <p class="text-white m-auto text-xs">
-                    Cupcake ipsum dolor sit amet croissant. I love topping candy canes sweet roll
-                    croissant caramels. Soufflé macaroon liquorice chocolate tart I love.
-                </p>
-            </div>
-        </header>
+        <Header />
 
         <main class="mt-8 flex flex-col items-center">
             <!-- Search Box  -->
@@ -25,35 +17,40 @@
             <!-- Table  -->
             <section class="text-xs mt-6 w-9/12">
                 <div class="relative overflow-auto">
-                    <table class="table-auto border border-white text-left">
-                        <thead class="bg-gray-800 text-white">
-                            <tr>
-                                <th class="px-4 py-2 border border-white">Title</th>
-                                <th class="px-4 py-2 border border-white">Author</th>
-                                <th class="px-4 py-2 border border-white">Rating</th>
-                                <th class="px-4 py-2 border border-white"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-gray-300">
-                            <tr v-for="book in filteredBooks" :key="book.id">
-                                <td class="px-4 py-3 border border-white">{{ book.title }}</td>
-                                <td class="px-4 py-3 border border-white">{{ book.author }}</td>
-                                <td class="px-4 py-3 border border-white">{{ book.rating }}</td>
-                                <td class="px-4 py-3 border border-white">
-                                    <button type="button"
-                                        @click="editBook(book.id)"
-                                        class="underline block font-bold hover:text-indigo-300">
-                                        Edit
-                                    </button>
-                                    <button type="button"
-                                        @click="deleteBook(book.id)"
-                                        class="underline font-bold hover:text-indigo-300">
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <template v-if="filteredBooks.length > 0">
+                        <table class="table-auto border border-white text-left">
+                            <thead class="bg-gray-800 text-white">
+                                <tr>
+                                    <th class="px-4 py-2 border border-white">Title</th>
+                                    <th class="px-4 py-2 border border-white">Author</th>
+                                    <th class="px-4 py-2 border border-white">Rating</th>
+                                    <th class="px-4 py-2 border border-white"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-gray-300">
+                                <tr v-for="book in filteredBooks" :key="book.id">
+                                    <td class="px-4 py-3 border border-white">{{ book.title }}</td>
+                                    <td class="px-4 py-3 border border-white">{{ book.author }}</td>
+                                    <td class="px-4 py-3 border border-white">{{ book.rating }}</td>
+                                    <td class="px-4 py-3 border border-white">
+                                        <button type="button"
+                                            @click="editBook(book.id)"
+                                            class="underline block font-bold hover:text-indigo-300">
+                                            Edit
+                                        </button>
+                                        <button type="button"
+                                            @click="deleteBook(book.id)"
+                                            class="underline font-bold hover:text-indigo-300">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </template>
+                    <template v-else>
+                        <p class="text-center text-red-500">No books found</p>
+                    </template>
                 </div>
             </section>
         </main>
@@ -62,9 +59,14 @@
 
 <script>
 import axios from "axios"
+import Header from "../Shared/Header.vue"
 
 export default {
     name: 'BookListing',
+
+    components: {
+        Header
+    },
 
     data() {
         return {
@@ -75,7 +77,9 @@ export default {
 
     computed: {
         filteredBooks() {
-            return this.books.filter(book => book.title.toLowerCase().includes(this.search.toLowerCase()))
+            return this.books.filter(book =>
+                book.title.toLowerCase().includes(this.search.toLowerCase())
+            )
         }
     },
 

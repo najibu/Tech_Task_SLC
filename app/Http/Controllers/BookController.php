@@ -48,7 +48,7 @@ class BookController extends Controller
 
          return response()->json([
             'message' => 'Successfully stored the book.',
-            'data' => $book
+            'data' => $book->load('genres')
         ]);
     }
 
@@ -86,7 +86,7 @@ class BookController extends Controller
 
         return response()->json([
             'message' => 'Successfully updated the book.',
-            'data' => $updatedBook
+            'data' => $updatedBook->load('genres')
         ]);
     }
 

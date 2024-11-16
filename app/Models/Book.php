@@ -13,6 +13,8 @@ class Book extends Model
 
     protected $guarded = [];
 
+    protected $with = ['genres'];
+
     /**
      * The genres that belong to the Book
      *
