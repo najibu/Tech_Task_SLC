@@ -1,12 +1,15 @@
 <template>
     <div>
+        <Header/>
+
         <main class="mt-8 flex flex-col items-center">
             <!-- Search Box  -->
             <section class="w-[1220px] mb-10">
                 <div class="flex relative">
                     <input type="text"
                         class="border border-gray-300 rounded-md w-1/3 p-2 m-auto block text-xs absolute right-12"
-                        v-model="search"
+                        v-model="searchQuery"
+                        @input="searchBooks"
                         placeholder="Search by book title ..."
                     />
                 </div>
@@ -57,23 +60,27 @@
 
 <script>
 import axios from "axios"
+import Swal from 'sweetalert2'
+import Header from "../Shared/Header.vue"
 
 export default {
     name: 'BookListing',
 
+    components: {
+        Header
+    },
+
     data() {
         return {
             books: [],
-            search: '',
+            searchQuery: '',
             loading: false
         }
     },
 
     computed: {
         filteredBooks() {
-            return this.books.filter(book =>
-                book.title.toLowerCase().includes(this.search.toLowerCase())
-            )
+            return this.books
         }
     },
 
@@ -91,7 +98,22 @@ export default {
                     this.loading = false
                 })
                 .catch(error => {
+                    this.loading = false
                     console.error('Error fetching books:', error)
+                })
+        },
+
+        searchBooks() {
+            this.loading = true
+
+            axios.get(`/api/books?query=${this.searchQuery}`)
+                .then(response => {
+                    this.books = response.data.data
+                    this.loading = false
+                })
+                .catch(error => {
+                    this.loading = false
+                    console.error('Error searching books:', error)
                 })
         },
 
@@ -100,18 +122,30 @@ export default {
         },
 
         deleteBook(id) {
-            if (confirm('Are you sure you want to delete this book?')) {
-                this.loading = true
+            Swal.fire({
+                title: 'Delete Book',
+                text: 'Are you sure you want to delete this book?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.loading = true
 
-                axios.delete(`/api/books/${id}`)
-                    .then(() => {
-                        this.fetch()
-                        this.loading = false
-                    })
-                    .catch(error => {
-                        console.error('Error failed deleting this book:', error)
-                    })
-            }
+                    axios.delete(`/api/books/${id}`)
+                        .then(() => {
+                            this.fetch()
+                            this.loading = false
+                        })
+                        .catch(error => {
+                            this.loading = false
+                            console.error('Error failed deleting this book:', error)
+                        })
+                }
+            })
         }
     }
 }

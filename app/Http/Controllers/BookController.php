@@ -27,7 +27,7 @@ class BookController extends Controller
     {
         return response()->json([
             'message' => 'Successfully fetched the books.',
-            'data' => $index()
+            'data' => $index($request->input('query'))
         ]);
     }
 

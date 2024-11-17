@@ -1,5 +1,7 @@
 <template>
     <div>
+        <Header />
+
         <div class="w-1/5 text-left mr-auto ml-auto -mt-0 mb-0">
             <form @submit.prevent="submit">
                 <div class="pt-10">
@@ -27,9 +29,15 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
+import Header from '../Shared/Header.vue'
 
 export default {
     name: 'EditBook',
+
+    components: {
+        Header
+    },
 
     props: {
         bookData: {
@@ -54,12 +62,41 @@ export default {
             this.loading = true
 
             axios.put(`/api/books/${this.bookData.id}`, this.book)
-                .then(() => {
-                    window.location.href = '/'
+                .then((response) => {
                     this.loading = false
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response.data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.href = '/'
+                    })
                 })
                 .catch(error => {
-                    console.error('Error failed to update this book:', error)
+                    this.loading = false
+
+                    if (error.response && error.response.status === 422) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Error',
+                            text: 'Please check the form for errors and try again',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3085d6',
+                        })
+                    } else {
+                        console.error('Error failed to update this book:', error)
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to update this book',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        })
+                    }
                 })
         }
     }
